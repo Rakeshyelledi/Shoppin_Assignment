@@ -1,0 +1,56 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce URL Crawler</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>E-commerce URL Crawler</h1>
+        
+        <nav class="nav-links">
+            <a href="/" class="nav-link active">Home</a>
+            <a href="/results" class="nav-link">View All Results</a>
+        </nav>
+
+        <% if (error) { %>
+            <div class="error-message">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/crawl" method="POST" class="input-section">
+            <textarea 
+                name="domains" 
+                placeholder="Enter domains (one per line)&#10;Example:&#10;example1.com&#10;example2.com"
+                required
+            ></textarea>
+            <button type="submit">Start Crawling</button>
+        </form>
+
+        <% if (results) { %>
+            <div class="results-section">
+                <h2>Crawling Results</h2>
+                <% Object.entries(results).forEach(([domain, urls]) => { %>
+                    <div class="domain-result">
+                        <h3><%= domain %></h3>
+                        <p>Total URLs Found: <%= urls.length %></p>
+                        <ul class="url-list">
+                            <% urls.forEach(url => { %>
+                                <li>
+                                    <a href="<%= url %>" target="_blank" class="nav-link">
+                                        <%= url %>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!-- views/results.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Crawling Results</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>All Crawling Results</h1>
+        
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/results" class="nav-link active">View All Results</a>
+        </nav>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="error-message">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <div class="results-section">
+            <% const domainGroups = {}; %>
+            <% results.forEach(result => { %>
+                <% if (!domainGroups[result.domain]) { %>
+                    <% domainGroups[result.domain] = []; %>
+                <% } %>
+                <% domainGroups[result.domain].push(result.url); %>
+            <% }); %>
+
+            <% Object.entries(domainGroups).forEach(([domain, urls]) => { %>
+                <div class="domain-result">
+                    <h3><%= domain %></h3>
+                    <p>Total URLs: <%= urls.length %></p>
+                    <ul class="url-list">
+                        <% urls.forEach(url => { %>
+                            <li><a href="<%= url %>" target="_blank"><%= url %></a></li>
+                        <% }); %>
+                    </ul>
+                    
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+</html>
